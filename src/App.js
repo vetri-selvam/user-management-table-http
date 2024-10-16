@@ -117,6 +117,31 @@ function App() {
 
 
     }
+
+    function deleteUser(id){
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`,
+            // Passing an object to say that we are POST-ing and not GET-ting
+            {
+                method: "DELETE"
+            }
+        )
+        .then((response) => response.json())
+        .then(data => {
+                setUsers(
+                    (users)=>{
+                        return users.filter(user => user.id !== id)
+                    }
+                )
+                AppToaster.show(
+                    {
+                        message: "User deleted Successfully!",
+                        intent: 'success',
+                        timeout: '3000'
+                    }
+                )
+
+        })
+    }
     return (
         <div className="App">
             <table className="bpr-html-table modifier">
@@ -137,7 +162,8 @@ function App() {
                             <td><EditableText onChange={(value)=>{onChangeHandler(user.id,'website',value)}} value={user.website}/></td>
                             <td>
                                 <Button intent="primary" onClick={()=>updateUser(user.id)}>Update</Button>
-                                <Button intent="danger">Delete</Button>
+                                &nbsp;
+                                <Button intent="danger" onClick={()=>deleteUser(user.id)}>Delete</Button>
                             </td>
                         </tr>
                     )}
