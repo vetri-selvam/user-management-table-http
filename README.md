@@ -17,6 +17,13 @@ This project is a React application for managing user data through an interactiv
 - **React Router**: For navigation within the application.
 - **BlueprintJS**: For styling and responsive design.
 
+## API Endpoints
+
+- **GET /users**: Fetch all users.
+- **POST /users**: Create a new user.
+- **PUT /users/:id**: Update user details.
+- **DELETE /users/:id**: Delete a user.
+
 ## Installation
 
 1. Clone the repository:
@@ -39,10 +46,3 @@ This project is a React application for managing user data through an interactiv
     npm start
     ```
 2. Open your browser and navigate to `http://localhost:3000`.
-
-## API Endpoints
-
-- **GET /users**: Fetch all users.
-- **POST /users**: Create a new user.
-- **PUT /users/:id**: Update user details.
-- **DELETE /users/:id**: Delete a user.
