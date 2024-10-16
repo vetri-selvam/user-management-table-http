@@ -62,6 +62,61 @@ function App() {
         }
     }
 
+    /**comment
+     *OnChangeHandler()
+     * Handles the change event for updating user data.
+     *
+     * @param {number} id - The ID of the user to update.
+     * @param {string} key - The key of the user object to update.
+     * @param {any} value - The new value to set for the specified key.
+     * @returns {void}
+     *
+     * The map function is used here to iterate over the array of users and create a new array with the updated user object.
+     * This ensures that the state is updated immutably, which is a key principle in React state management.
+     **/
+    function onChangeHandler(id, key, value){
+        setUsers(
+            (users)=>{
+                return users.map(user =>{
+                    
+                    return user.id === id? {...user, [key]:value} : user;
+                })
+            }
+        )
+    }
+
+    function updateUser(id){
+        /**comment
+         * Finds a user by their unique identifier.
+         *
+         * @param {number} id - The unique identifier of the user to find.
+         * @returns {Object|undefined} The user object if found, otherwise undefined.
+         */
+        const user = users.find((user)=> user.id === id);
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`,
+            // Passing an object to say that we are POST-ing and not GET-ting
+            {
+                method: "POST",
+                body: JSON.stringify(user),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            }
+        )
+        .then((response) => response.json())
+        .then(data => {
+            AppToaster.show(
+                {
+                    message: "User Updated Successfully!",
+                    intent: 'success',
+                    timeout: '3000'
+                }
+            )
+
+        })
+
+
+    }
     return (
         <div className="App">
             <table className="bpr-html-table modifier">
@@ -78,10 +133,10 @@ function App() {
                         <tr key={user.id}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
-                            <td><EditableText value={user.email}/></td>
-                            <td><EditableText value={user.website}/></td>
+                            <td><EditableText onChange={(value)=>{onChangeHandler(user.id,'email',value)}} value={user.email}/></td>
+                            <td><EditableText onChange={(value)=>{onChangeHandler(user.id,'website',value)}} value={user.website}/></td>
                             <td>
-                                <Button intent="primary">Update</Button>
+                                <Button intent="primary" onClick={()=>updateUser(user.id)}>Update</Button>
                                 <Button intent="danger">Delete</Button>
                             </td>
                         </tr>
